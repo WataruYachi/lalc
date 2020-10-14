@@ -8,19 +8,19 @@ type Error = String
 
 newtype ParseError = E {errorMsg :: String -> String}
 
-newtype Parser a = P (String -> Either Error (a, String))
+newtype Parser a = P (String -> Either ParseError (a, String))
 
-runParser :: Parser a -> String -> Either Error (a,String)
+runParser :: Parser a -> String -> Either ParseError (a,String)
 runParser (P p) input = p input
 
 parseTest :: Show a => Parser a -> String -> String
 parseTest (P p) input = case p input of
-                            Left e -> e
+                            Left (E e) -> e "parseError \n"
                             Right (o,s) -> (show o)
 
 item :: Parser Char
 item = P (\input -> case input of
-                        [] -> Left "Error [item]: no input"
+                        [] -> Left $ E (\s -> s ++ "[item]: no input \n")
                         (x:xs) -> Right (x,xs))
 
 
@@ -46,7 +46,7 @@ instance Monad Parser where
                                 Right (o,s) -> runParser (f o) s)
 
 instance Alternative Parser where
-    empty = P (\input -> Left "Parse Error")
+    empty = P (\input -> Left $ E (\s -> s ++ "[empty]: empty"))
     p <|> q = P (\input -> case runParser p input of
                         Left _ -> runParser q input
                         Right (o,s) -> Right (o,s))
