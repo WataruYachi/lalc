@@ -6,6 +6,7 @@ import Data.Char
 
 import Lib
 import Parser
+import Calc
 
 data Ident = Ident String
 
@@ -15,12 +16,12 @@ instance Show Ident where
 infixl 9 :$
 infixl 7 :\
 
-data Expr
+data LExpr
     = Var Ident
-    | Ident :\ Expr
-    | Expr :$ Expr
+    | Ident :\ LExpr
+    | LExpr :$ LExpr
 
-instance Show Expr where
+instance Show LExpr where
     show (Var a) = show a
     show (id :\ exp) = "λ" ++ show id ++ "." ++ (show exp)
     show (exp1 :$ exp2) = (show exp1) ++ " " ++ (show exp2)

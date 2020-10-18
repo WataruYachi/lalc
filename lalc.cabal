@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 5fa39d3fa22a56952b564e63dcb248857faa71bce8e69f0e287567e452f5ec6d
+-- hash: 68ec2392dd582b713ae0ca3d0d4c88e8eefef210be9377cf6f839a4d127d9e1e
 
 name:           lalc
 version:        0.1.0.0
@@ -27,6 +27,7 @@ source-repository head
 
 library
   exposed-modules:
+      Calc
       Lib
       Parser
   other-modules:
